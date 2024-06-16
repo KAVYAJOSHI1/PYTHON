@@ -1,3 +1,4 @@
+#change
 print("ENTER THE STRING")
 a=str(input())
 count=0
