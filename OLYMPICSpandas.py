@@ -18,7 +18,9 @@ data=pd.read_csv("C:/Users/KAVYA JOSHI/Downloads/DATASETS/athlete_events.csv")
 #print(a[(a['Sex']=='F')].query('Sport=="Cycling"'))
 
 #AVERAGE AGE OF THE ATLETE CHANGED OVER THE  YEARS FOR EACH SPORT
-#print(data.groupby(by=["Sport","Year"])["Age"].mean().reset_index().query('Sport ==" Archery"'))
+a=(data.groupby(by=["Sport","Year"])["Age"].mean().reset_index())#.query('Sport ==" Archery"'))
+
+print(a.query('Sport == "Archery"'))
 #TO FIND THE ATHELETES WHO HAVE PARRTICIPATED MULTIPLE TIMES IN THE OLYMPICS
 """participation=data.groupby(by="Name").filter(lambda x:x['Year'].nunique()>1)
 print(participation)
@@ -44,4 +46,4 @@ print(a)"""
 #print(data.groupby(by=['NOC','Sport'])['Medal'].count())
 #WHTA ARE TRENDS IN MEDAL COUNTS FOR TOP PERFORMINGCOUNTRIES OVER THE YEARS
 
-print(data.groupby(by=['Year','NOC'])['Medal'].count().sort_values(ascending=False).head(10))
+#print(data.groupby(by=['Year','NOC'])['Medal'].count().sort_values(ascending=False).head(10))
