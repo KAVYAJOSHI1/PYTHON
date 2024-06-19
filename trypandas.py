@@ -1,7 +1,11 @@
 import pandas as pd
 
-"""data=pd.read_csv("C:/Users/KAVYA JOSHI/Downloads/DATASETS/TITANIC.csv")
-print(data.to_string())"""
+pd.options.display.max_rows=1000
+data=pd.read_csv("C:/Users/KAVYA JOSHI/Downloads/DATASETS/TITANIC.csv")
+
+
+print(data)
+
 
 #dataframe from dictionary
 
