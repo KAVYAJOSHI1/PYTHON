@@ -1,0 +1,29 @@
+Basic Inspection:
+
+Load the CSV file into a pandas DataFrame.
+Display the first 5 rows of the DataFrame.
+Display the summary statistics of the DataFrame.
+Filtering Data:
+
+Select all employees from the 'Engineering' department.
+Select all employees with a salary greater than 60,000.
+Aggregation and Grouping:
+
+Calculate the average salary of employees in each department.
+Find the department with the highest average age.
+Data Manipulation:
+
+Add a new column Bonus which is 10% of the Salary.
+Create a new DataFrame that only includes employees who are older than 30 and have a salary less than 80,000.
+Sorting Data:
+
+Sort the DataFrame by Age in ascending order.
+Sort the DataFrame by Salary in descending order.
+Handling Missing Data:
+
+Assume there are missing values in the Age column, fill them with the mean age.
+Drop any rows where the Department is missing.
+Advanced Operations:
+
+Find the employee with the highest salary.
+Calculate the total salary expense for the company.

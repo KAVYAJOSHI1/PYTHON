@@ -10,3 +10,4 @@ sns.barplot(x="Roll_no",y="Marks",data=df)
 
 plt.title("RESULT GRAPH")
 plt.show()
+print(df.corr())

@@ -13,3 +13,5 @@ print(data["Age"])"""
 """a=data["Age"].mean()
 data["Age"].fillna(a,inplace=True)
 print(data["Age"])"""
+#TO FIND CORRELATION
+print(data.corr())
