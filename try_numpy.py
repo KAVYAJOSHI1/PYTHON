@@ -1,5 +1,5 @@
 import numpy as np
-a=np.array([1,2,3])
-b=np.array([4,5,6])
+a=np.array([1,20,3])
+b=np.array([4,6,15])
 c=np.concatenate((a,b))
-print(c)
+print(np.sort(c))
