@@ -1,6 +1,11 @@
 import numpy as np
 a=np.array([[1,2],[9,7]])
+print("THE FIRST MATRIX IS:\n")
+print(a)
 b=np.array([[8,4],[2,3]])
+print("THE SECOND MATRIX IS:\n")
+print(b)
 c=np.matmul(a, b)
+print("THE MULTIPLICATION OF TWO ARRAY IS :\n")
 print(c)
 print(c[0][1])
