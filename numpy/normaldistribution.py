@@ -1,3 +1,5 @@
 from numpy import random
-x=random.normal(2,1,(3,3))
-print(x)
+import seaborn as sns
+import matplotlib.pyplot as plt
+sns.histplot(random.normal(loc=2,scale=1,size=(3,3)),kde=False)
+plt.show()
