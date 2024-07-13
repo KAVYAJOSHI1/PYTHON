@@ -15,8 +15,9 @@ print(a)
 print("ENTER THE ELEMENT TO BE SEARCHED:\n")
 x=int(input())
 if x in a:
-    INDEX=np.where(a==x)[0]+1
-    print("ELEMENT FOUND AT POSITION"+ str(INDEX))
+    INDEX=np.where(a==x)[0]
+    print("ELEMENT FOUND AT POSITION "+ str(INDEX[0]+1))
 else:
     print("ELEMENT NOT FOUND")
+
 
