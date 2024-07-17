@@ -48,6 +48,7 @@ class Book:
         sell=int(input()) 
         if sell<=self.copies:
             self.copies=self.copies-sell
+            print("TOTAL PRICE: "+str(sell*self.price))
         else:
             print("INSUFFICIENT COPIES")
 
