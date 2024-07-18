@@ -71,7 +71,7 @@ while True:
     elif choice == 3:
         book1.display()
     elif choice == 4:
-        print("Exiting the program.")
+        print("\nExiting the program.")
         break
     else:
-        print("Invalid choice. Please try again.")
+        print("\nInvalid choice. Please try again.")
