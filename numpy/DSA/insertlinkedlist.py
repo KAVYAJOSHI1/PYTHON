@@ -41,13 +41,24 @@ class LinkedList:
         current.next = new_node
         print("NODE INSERTED AT POSITION", pos, "SUCCESSFULLY")
 
+    def display(self):
+            if not self.head:
+                print("LIST IS EMPTY")
+                return
+            current=self.head
+            while current:
+                print(current.value,end = " -> ")
+                current = current.next
+            print("None")
+
 def main():
     obj = LinkedList()
     while True:
         print("1. INSERT AT BEGINNING")
         print("2. INSERT AT END")
         print("3. INSERT AT SPECIFIED POSITION")
-        print("4. EXIT")
+        print("4. DISPLAY LIST")
+        print("5. EXIT")
         ch = int(input("ENTER YOUR CHOICE: "))
         if ch == 1:
             val = int(input("ENTER THE VALUE: "))
@@ -59,7 +70,9 @@ def main():
             val = int(input("ENTER THE VALUE: "))
             pos = int(input("ENTER THE POSITION: "))
             obj.insert_pos(val, pos)
-        elif ch == 4:
+        elif ch==4:
+            obj.display()
+        elif ch == 5:
             break
         else:
             print("INVALID CHOICE")
