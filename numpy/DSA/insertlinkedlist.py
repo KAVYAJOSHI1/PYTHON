@@ -51,6 +51,50 @@ class LinkedList:
                 current = current.next
             print("None")
 
+    def delete_beg(self):
+        if not self.head:
+            print("LIST IS EMPTY")
+        else:
+            self.head = self.head.next
+            print("NODE DELETED FROM BEGINNING SUCCESSFULLY")
+
+    def delete_end(self):
+        if not self.head:
+            print("LIST IS EMPTY")
+            return
+        if not self.head.next:
+            self.head=None
+            print("NODE DELETED FROM END SUCCESSFULLY")
+            return
+        current=self.head
+        while current.next:
+            current=current.next
+        current.next=None
+        print("NODE DELETED FROM END SUCCESSFULLY")
+
+    def delete_pos(self,pos):
+        if not self.head:
+            print("LIST IS EMPTY")
+            return
+        if pos ==0:
+            self.head=self.head.next
+            print("NODE DELETED FROM POSITION",pos,"SUCCESSFULLY")
+            return
+        current=self.head
+        for i in range(pos-1):
+            if current is None:
+                print("INVALID POSITION")
+                return
+            current=current.next
+        if current.next is None:
+            print("INVALID POSITION")
+            return
+        current.next=current.next.next
+        print("NODE DELETED FROM POSITION",pos,"SUCCESSFULLY")
+
+        
+        
+
 def main():
     obj = LinkedList()
     while True:
@@ -70,9 +114,15 @@ def main():
             val = int(input("ENTER THE VALUE: "))
             pos = int(input("ENTER THE POSITION: "))
             obj.insert_pos(val, pos)
-        elif ch==4:
+        elif ch == 4:
+            obj.delete_beg()
+        elif ch==5:
+            obj.delete_end()
+        elif ch==6:
+            obj.delete_pos(pos)
+        elif ch==8:
             obj.display()
-        elif ch == 5:
+        elif ch == 9:
             break
         else:
             print("INVALID CHOICE")

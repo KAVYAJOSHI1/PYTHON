@@ -41,6 +41,47 @@ class LinkedList:
         current.next = new_node
         print("NODE INSERTED AT POSITION", pos, "SUCCESSFULLY")
 
+    def delete_beg(self):
+        if not self.head:
+            print("LIST IS EMPTY")
+            return
+        self.head = self.head.next
+        print("NODE DELETED FROM BEGINNING SUCCESSFULLY")
+
+    def delete_end(self):
+        if not self.head:
+            print("LIST IS EMPTY")
+            return
+        if not self.head.next:
+            self.head = None
+            print("NODE DELETED FROM END SUCCESSFULLY")
+            return
+        current = self.head
+        while current.next.next:
+            current = current.next
+        current.next = None
+        print("NODE DELETED FROM END SUCCESSFULLY")
+
+    def delete_pos(self, pos):
+        if not self.head:
+            print("LIST IS EMPTY")
+            return
+        if pos == 0:
+            self.head = self.head.next
+            print("NODE DELETED FROM POSITION", pos, "SUCCESSFULLY")
+            return
+        current = self.head
+        for i in range(pos - 1):
+            if current is None or current.next is None:
+                print("INVALID POSITION")
+                return
+            current = current.next
+        if current.next is None:
+            print("INVALID POSITION")
+            return
+        current.next = current.next.next
+        print("NODE DELETED FROM POSITION", pos, "SUCCESSFULLY")
+
     def display(self):
         if not self.head:
             print("LIST IS EMPTY")
@@ -58,8 +99,11 @@ def main():
         print("1. INSERT AT BEGINNING")
         print("2. INSERT AT END")
         print("3. INSERT AT SPECIFIED POSITION")
-        print("4. DISPLAY LIST")
-        print("5. EXIT")
+        print("4. DELETE FROM BEGINNING")
+        print("5. DELETE FROM END")
+        print("6. DELETE FROM SPECIFIED POSITION")
+        print("7. DISPLAY LIST")
+        print("8. EXIT")
         ch = int(input("ENTER YOUR CHOICE: "))
         if ch == 1:
             val = int(input("ENTER THE VALUE: "))
@@ -72,8 +116,15 @@ def main():
             pos = int(input("ENTER THE POSITION: "))
             obj.insert_pos(val, pos)
         elif ch == 4:
-            obj.display()
+            obj.delete_beg()
         elif ch == 5:
+            obj.delete_end()
+        elif ch == 6:
+            pos = int(input("ENTER THE POSITION: "))
+            obj.delete_pos(pos)
+        elif ch == 7:
+            obj.display()
+        elif ch == 8:
             break
         else:
             print("INVALID CHOICE")
