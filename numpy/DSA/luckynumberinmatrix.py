@@ -6,12 +6,15 @@ n=int(input())
 m=int(input())
 print("ENTER THE MATRIX ELEMENTS")
 
-a=np.array([[int(input()) for i in range(n)]for j in range(m)])
+a=np.empty((n,m),dtype=int)
+for i in range(n):
+    for j in range(m):
+        a[i][j]=int(input())    
 print("THE MATRIX IS")
 print(a)
 for i in range(n):
     for j in range(m):
-        if(a[i][j]==min(a[i]) and a[i][j]==max(a[:,j])):
+        if(a[i][j]==min(a[i,:]) and a[i][j]==max(a[:,j])):
             print("LUCKY NUMBER IS: " ,a[i][j])
             break
       
