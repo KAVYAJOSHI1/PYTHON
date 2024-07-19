@@ -101,8 +101,12 @@ def main():
         print("1. INSERT AT BEGINNING")
         print("2. INSERT AT END")
         print("3. INSERT AT SPECIFIED POSITION")
-        print("4. DISPLAY LIST")
-        print("5. EXIT")
+        print("4. DELETE FROM BEGINNING")
+        print("5. DELETE FROM END")
+        print("6. DELETE FROM SPECIFIED POSITION")
+        print("8. DISPLAY LIST")
+        print("9. EXIT")
+       
         ch = int(input("ENTER YOUR CHOICE: "))
         if ch == 1:
             val = int(input("ENTER THE VALUE: "))
