@@ -14,8 +14,8 @@ for i in range(n):
     if(a[i]==x):
         temp=str(i+1)
         break
-    if temp!="":
+if temp!="":
         print("THE NUMBER FOUND AT INDEX "+temp)
-    else:
+else:
         print("THE NUMBER NOT FOUND")   
 
