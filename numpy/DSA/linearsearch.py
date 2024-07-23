@@ -9,10 +9,13 @@ for i in range(n):
 a=np.array(LIST) 
 print("ENTER THE NUMBER TO BE SEARCHED")
 x=int(input())
+temp=""
 for i in range(n):
     if(a[i]==x):
-        print("THE NUMBER FOUND AT POSITION "+str(i+1))
+        temp=str(i+1)
         break
+    if temp!="":
+        print("THE NUMBER FOUND AT INDEX "+temp)
     else:
         print("THE NUMBER NOT FOUND")   
 
