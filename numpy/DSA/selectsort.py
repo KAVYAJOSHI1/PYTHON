@@ -11,13 +11,19 @@ print(a)
 min=0
 temp=0
 for i in range (0,n):
+    min=a[n-1]
+    pos=n-1
     for j in range(i+1,n):
-        min=a[i]
-        if(a[j]<min):
+        if a[j]<min:
             min=a[j]
-            temp=a[i]
-            a[i]=a[j]
-            a[j]=temp
+            pos=j
+
+    if(i<=pos):
+        temp=a[i]
+        a[i]=a[pos]
+        a[pos]=temp
+       
+        
 
 print("THE SORTED ARRAY IS:")
 print(a)
