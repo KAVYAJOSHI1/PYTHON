@@ -20,10 +20,28 @@ class Book:
         author = input("Enter author: ")
         price = float(input("Enter price: "))
         copies = int(input("Enter number of copies: "))
+
+        # Check if the book already exists
         self.cursor.execute('''
-            INSERT INTO books (title, author, price, copies)
-            VALUES (?, ?, ?, ?)
-        ''', (title, author, price, copies))
+            SELECT id, copies FROM books WHERE title = ? AND author = ?
+        ''', (title, author))
+        book = self.cursor.fetchone()
+
+        if book:
+            # If the book exists, update the number of copies
+            new_copies = book[1] + copies
+            self.cursor.execute('''
+                UPDATE books SET copies = ?, price = ? WHERE id = ?
+            ''', (new_copies, price, book[0]))
+            print(f"Updated existing book. Total copies: {new_copies}")
+        else:
+            # If the book does not exist, insert a new record
+            self.cursor.execute('''
+                INSERT INTO books (title, author, price, copies)
+                VALUES (?, ?, ?, ?)
+            ''', (title, author, price, copies))
+            print(f"Added new book: {title}")
+
         self.connection.commit()
 
     def display(self):
@@ -57,7 +75,7 @@ book1 = Book()
 # Menu-driven program using while True and if-else
 while True:
     print("\nMenu:")
-    print("1. Insert New Book")
+    print("1. Insert New Book or Add Copies to Existing Book")
     print("2. Sell Books")
     print("3. Display Book Information")
     print("4. Exit")
