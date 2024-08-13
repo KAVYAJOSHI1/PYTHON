@@ -1,7 +1,9 @@
 import sqlite3
+import tkinter as tk
+from tkinter import messagebox
 
-class Book:
-    def __init__(self):
+class BookApp:
+    def __init__(self, root):
         self.connection = sqlite3.connect('books.db')
         self.cursor = self.connection.cursor()
         self.cursor.execute('''
@@ -15,11 +17,77 @@ class Book:
         ''')
         self.connection.commit()
 
-    def take_input(self):
-        title = input("Enter book title: ")
-        author = input("Enter author: ")
-        price = float(input("Enter price: "))
-        copies = int(input("Enter number of copies: "))
+        self.root = root
+        self.root.title("Bookstore Management")
+
+        # Creating the GUI components
+        self.create_widgets()
+
+    def create_widgets(self):
+        # Book Entry Fields
+        self.title_label = tk.Label(self.root, text="Title:")
+        self.title_label.grid(row=0, column=0, padx=10, pady=10)
+        self.title_entry = tk.Entry(self.root)
+        self.title_entry.grid(row=0, column=1, padx=10, pady=10)
+
+        self.author_label = tk.Label(self.root, text="Author:")
+        self.author_label.grid(row=1, column=0, padx=10, pady=10)
+        self.author_entry = tk.Entry(self.root)
+        self.author_entry.grid(row=1, column=1, padx=10, pady=10)
+
+        self.price_label = tk.Label(self.root, text="Price:")
+        self.price_label.grid(row=2, column=0, padx=10, pady=10)
+        self.price_entry = tk.Entry(self.root)
+        self.price_entry.grid(row=2, column=1, padx=10, pady=10)
+
+        self.copies_label = tk.Label(self.root, text="Copies:")
+        self.copies_label.grid(row=3, column=0, padx=10, pady=10)
+        self.copies_entry = tk.Entry(self.root)
+        self.copies_entry.grid(row=3, column=1, padx=10, pady=10)
+
+        self.add_button = tk.Button(self.root, text="Add Book", command=self.add_book)
+        self.add_button.grid(row=4, column=0, columnspan=2, pady=10)
+
+        # Sell Book
+        self.sell_label = tk.Label(self.root, text="Sell Book ID:")
+        self.sell_label.grid(row=5, column=0, padx=10, pady=10)
+        self.sell_entry = tk.Entry(self.root)
+        self.sell_entry.grid(row=5, column=1, padx=10, pady=10)
+
+        self.sell_copies_label = tk.Label(self.root, text="Copies to Sell:")
+        self.sell_copies_label.grid(row=6, column=0, padx=10, pady=10)
+        self.sell_copies_entry = tk.Entry(self.root)
+        self.sell_copies_entry.grid(row=6, column=1, padx=10, pady=10)
+
+        self.sell_button = tk.Button(self.root, text="Sell Book", command=self.sell_book)
+        self.sell_button.grid(row=7, column=0, columnspan=2, pady=10)
+
+        # Refill Book Stock
+        self.refill_label = tk.Label(self.root, text="Refill Book ID:")
+        self.refill_label.grid(row=8, column=0, padx=10, pady=10)
+        self.refill_entry = tk.Entry(self.root)
+        self.refill_entry.grid(row=8, column=1, padx=10, pady=10)
+
+        self.refill_copies_label = tk.Label(self.root, text="Copies to Add:")
+        self.refill_copies_label.grid(row=9, column=0, padx=10, pady=10)
+        self.refill_copies_entry = tk.Entry(self.root)
+        self.refill_copies_entry.grid(row=9, column=1, padx=10, pady=10)
+
+        self.refill_button = tk.Button(self.root, text="Refill Book Stock", command=self.refill_book)
+        self.refill_button.grid(row=10, column=0, columnspan=2, pady=10)
+
+        # Display Books
+        self.display_button = tk.Button(self.root, text="Display Books", command=self.display_books)
+        self.display_button.grid(row=11, column=0, columnspan=2, pady=10)
+
+        self.books_text = tk.Text(self.root, width=50, height=10)
+        self.books_text.grid(row=12, column=0, columnspan=2, padx=10, pady=10)
+
+    def add_book(self):
+        title = self.title_entry.get()
+        author = self.author_entry.get()
+        price = float(self.price_entry.get())
+        copies = int(self.copies_entry.get())
 
         # Check if the book already exists
         self.cursor.execute('''
@@ -28,32 +96,24 @@ class Book:
         book = self.cursor.fetchone()
 
         if book:
-            # If the book exists, update the number of copies
             new_copies = book[1] + copies
             self.cursor.execute('''
                 UPDATE books SET copies = ?, price = ? WHERE id = ?
             ''', (new_copies, price, book[0]))
-            print(f"Updated existing book. Total copies: {new_copies}")
+            messagebox.showinfo("Success", f"Updated existing book. Total copies: {new_copies}")
         else:
-            # If the book does not exist, insert a new record
             self.cursor.execute('''
                 INSERT INTO books (title, author, price, copies)
                 VALUES (?, ?, ?, ?)
             ''', (title, author, price, copies))
-            print(f"Added new book: {title}")
+            messagebox.showinfo("Success", f"Added new book: {title}")
 
         self.connection.commit()
+        self.clear_entries()
 
-    def display(self):
-        self.cursor.execute('SELECT * FROM books')
-        books = self.cursor.fetchall()
-        print("\nBook Details:")
-        for book in books:
-            print(f"ID: {book[0]}, Title: {book[1]}, Author: {book[2]}, Price: ${book[3]:.2f}, Copies Available: {book[4]}")
-
-    def sell_copies(self):
-        book_id = int(input("Enter book ID to sell copies: "))
-        num_copies = int(input("Enter number of copies to sell: "))
+    def sell_book(self):
+        book_id = int(self.sell_entry.get())
+        num_copies = int(self.sell_copies_entry.get())
         self.cursor.execute('SELECT copies, price FROM books WHERE id = ?', (book_id,))
         book = self.cursor.fetchone()
         if book and num_copies <= book[0]:
@@ -61,56 +121,53 @@ class Book:
             new_copies = book[0] - num_copies
             self.cursor.execute('UPDATE books SET copies = ? WHERE id = ?', (new_copies, book_id))
             self.connection.commit()
-            print(f"Total Price: ${total_price:.2f}")
-            print(f"Copies Remaining: {new_copies}")
+            messagebox.showinfo("Success", f"Total Price: ${total_price:.2f}\nCopies Remaining: {new_copies}")
         else:
-            print("Insufficient copies available or book not found.")
+            messagebox.showerror("Error", "Insufficient copies available or book not found.")
 
-    def refill_copies(self):
-        book_id = int(input("Enter book ID to add more copies: "))
-        
+        self.clear_entries()
+
+    def refill_book(self):
+        book_id = int(self.refill_entry.get())
+        copies = int(self.refill_copies_entry.get())
+
         self.cursor.execute('SELECT title, author, price, copies FROM books WHERE id = ?', (book_id,))
         book = self.cursor.fetchone()
 
         if book:
-            copies = int(input(f"Enter the number of copies to add for '{book[0]}' by {book[1]}: "))
             new_copies = book[3] + copies
             self.cursor.execute('''
                 UPDATE books SET copies = ? WHERE id = ?
             ''', (new_copies, book_id))
-            print(f"Updated book '{book[0]}' by {book[1]}. Total copies: {new_copies}")
+            self.connection.commit()
+            messagebox.showinfo("Success", f"Updated book '{book[0]}' by {book[1]}. Total copies: {new_copies}")
         else:
-            print("Book ID not found. Please try again.")
+            messagebox.showerror("Error", "Book ID not found. Please try again.")
 
-        self.connection.commit()
+        self.clear_entries()
+
+    def display_books(self):
+        self.books_text.delete(1.0, tk.END)
+        self.cursor.execute('SELECT * FROM books')
+        books = self.cursor.fetchall()
+        for book in books:
+            self.books_text.insert(tk.END, f"ID: {book[0]}, Title: {book[1]}, Author: {book[2]}, Price: ${book[3]:.2f}, Copies Available: {book[4]}\n")
+
+    def clear_entries(self):
+        self.title_entry.delete(0, tk.END)
+        self.author_entry.delete(0, tk.END)
+        self.price_entry.delete(0, tk.END)
+        self.copies_entry.delete(0, tk.END)
+        self.sell_entry.delete(0, tk.END)
+        self.sell_copies_entry.delete(0, tk.END)
+        self.refill_entry.delete(0, tk.END)
+        self.refill_copies_entry.delete(0, tk.END)
 
     def __del__(self):
         self.connection.close()
 
-# Create an instance of the Book class
-book1 = Book()
-
-# Menu-driven program using while True and if-else
-while True:
-    print("\nMenu:")
-    print("1. Insert New Book or Add Copies to Existing Book")
-    print("2. Sell Books")
-    print("3. Display Book Information")
-    print("4. Refill Book Stock by ID")
-    print("5. Exit")
-    
-    choice = int(input("Enter your choice: "))
-
-    if choice == 1:
-        book1.take_input()
-    elif choice == 2:
-        book1.sell_copies()
-    elif choice == 3:
-        book1.display()
-    elif choice == 4:
-        book1.refill_copies()
-    elif choice == 5:
-        print("\nExiting the program.")
-        break
-    else:
-        print("\nInvalid choice. Please try again.")
+# Run the application
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = BookApp(root)
+    root.mainloop()
