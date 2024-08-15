@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refill Stock</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
+        <h1>Refill Stock</h1>
+    </header>
+    <main>
+        <form method="post">
+            <label for="book_id">Book ID:</label>
+            <input type="number" id="book_id" name="book_id" required><br>
+            <label for="refill_copies">Copies to Refill:</label>
+            <input type="number" id="refill_copies" name="refill_copies" required><br>
+            <input type="submit" value="Refill Stock">
+        </form>
+        <a href="{{ url_for('index') }}" class="btn">Back to Main Menu</a>
+    </main>
+</body>
+</html>
