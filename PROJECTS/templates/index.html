@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bookstore Management</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Bookstore Management System</h1>
+    <form action="/add_book" method="post">
+        <input type="text" name="title" placeholder="Title" required>
+        <input type="text" name="author" placeholder="Author" required>
+        <input type="number" name="price" placeholder="Price" step="0.01" required>
+        <input type="number" name="copies" placeholder="Copies" required>
+        <button type="submit">Add Book</button>
+    </form>
+    <form action="/display_books" method="get">
+        <button type="submit">Display Books</button>
+    </form>
+    <!-- Similar forms for sell, refill, delete -->
+</body>
+</html>
