@@ -2,6 +2,7 @@ import sqlite3
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
+from tkinter import PhotoImage
 
 class BookApp:
     def __init__(self, root):
@@ -9,19 +10,23 @@ class BookApp:
         self.cursor = self.connection.cursor()
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS books (
-              id INTEGER PRIMARY KEY,
-              title TEXT,
-              author TEXT,
-              price REAL,
-              copies INTEGER
+                id INTEGER PRIMARY KEY,
+                title TEXT,
+                author TEXT,
+                price REAL,
+                copies INTEGER
             )
         ''')
         self.connection.commit()
 
         self.root = root
         self.root.title("Bookstore Management")
-        self.root.geometry("400x300")
+        self.root.geometry("400x400")
         self.root.configure(bg="#e0f7fa")
+
+        # Load images
+        self.logo_image = PhotoImage(file="logo.png")  # Path to your logo image
+        self.bg_image = PhotoImage(file="background.png")  # Path to your background image
 
         # Initialize style
         self.style = ttk.Style()
@@ -33,7 +38,7 @@ class BookApp:
 
     def create_main_menu_widgets(self):
         # Title Label
-        self.title_label = ttk.Label(self.root, text="Bookstore Management System")
+        self.title_label = ttk.Label(self.root, text="Bookstore Management System", image=self.logo_image, compound=tk.TOP)
         self.title_label.grid(row=0, column=0, columnspan=2, padx=10, pady=20)
 
         # Buttons stacked vertically with padding
@@ -117,8 +122,8 @@ class AddBookWindow:
         # Database operation
         conn = sqlite3.connect('books.db')
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO books (title, author, price, copies) VALUES (?, ?, ?, ?)',
-                                         (title, author, price, copies))
+        cursor.execute('INSERT INTO books (title, author, price, copies) VALUES (?, ?, ?, ?)', 
+                        (title, author, price, copies))
         conn.commit()
         conn.close()
 
@@ -163,7 +168,6 @@ class SellBookWindow:
         # Initialize style
         self.style = ttk.Style()
         self.style.configure('TButton', font=('Arial', 12), padding=6)
-        
         self.style.configure('TLabel', font=('Arial', 12), background="#e0f7fa")
         self.style.configure('TEntry', font=('Arial', 12), padding=6)
 
@@ -189,16 +193,20 @@ class SellBookWindow:
         cursor.execute('SELECT copies FROM books WHERE id = ?', (book_id,))
         result = cursor.fetchone()
 
-        if result and result[0] >= sell_copies:
-            new_copies = result[0] - sell_copies
-            cursor.execute('UPDATE books SET copies = ? WHERE id = ?', (new_copies, book_id))
-            conn.commit()
-            conn.close()
-            self.top.destroy()
-            messagebox.showinfo("Success", "Book sold successfully!")
+        if result:
+            if result[0] >= sell_copies:
+                new_copies = result[0] - sell_copies
+                cursor.execute('UPDATE books SET copies = ? WHERE id = ?', (new_copies, book_id))
+                conn.commit()
+                conn.close()
+                self.top.destroy()
+                messagebox.showinfo("Success", "Book sold successfully!")
+            else:
+                conn.close()
+                messagebox.showerror("Error", "Not enough copies available.")
         else:
             conn.close()
-            messagebox.showerror("Error", "Not enough copies available or invalid book ID.")
+            messagebox.showerror("Error", "Invalid book ID.")
 
 class RefillStockWindow:
     def __init__(self, parent):
